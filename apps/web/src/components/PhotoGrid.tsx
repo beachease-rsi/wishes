@@ -10,8 +10,13 @@ type Memory = {
 };
 
 const fallbackMemories: Memory[] = [
-    { id: '1', img_url: "https://images.unsplash.com/photo-1517404215738-15263e9f9178?q=80&w=600&auto=format&fit=crop", message: "That time we got lost in the city but found the best pizza place ever. 🍕" },
-    { id: '2', img_url: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=600&auto=format&fit=crop", message: "Late night drives singing our lungs out to awful songs. 🚗🎶" },
+    { id: '1', img_url: "https://i.postimg.cc/4dHvHLcs/Whats-App-Image-2026-03-09-at-22-24-04.jpg", message: "This is us when we moved in together 🍕" },
+    { id: '2', img_url: "https://i.postimg.cc/hjVzqHxL/Whats-App-Image-2026-03-09-at-22-24-06.jpg", message: "Being happy no matter what😇" },
+    { id: '3', img_url: "https://i.postimg.cc/yNcYJ0NL/Whats-App-Image-2026-03-09-at-22-25-05.jpg", message: "Romanticizing our life❤️" },
+    { id: '4', img_url: "https://i.postimg.cc/bv7pprHL/Whats-App-Image-2026-03-09-at-22-18-28.jpg", message: "vibing in the era😎" },
+    { id: '5', img_url: "https://i.postimg.cc/nzKbxkL8/Whats-App-Image-2026-03-09-at-22-18-32.jpg", message: " Sparkles of diwali night🥳" },
+    { id: '6', img_url: "https://i.postimg.cc/9XTzR5DR/Whats-App-Image-2026-03-09-at-22-18-27.jpg", message: "The happy laughter😁" },
+
 ]
 
 export function PhotoGrid() {

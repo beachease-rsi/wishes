@@ -395,7 +395,7 @@ export function Hero() {
                             transition={{ delay: 4.8, duration: 1 }}
                             className="text-xl md:text-2xl opacity-80 mb-12 max-w-2xl mx-auto leading-relaxed text-center"
                         >
-                            Today is all about celebrating you and the joy you bring to my life. Every moment with you is a memory worth treasuring.
+                            Today is all about celebrating you and the joy you bring to  life. Every moment with you is a memory worth treasuring.
                         </motion.p>
 
                         <motion.button

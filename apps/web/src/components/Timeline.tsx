@@ -18,17 +18,34 @@ const fallbackEvents: TimelineEvent[] = [
         id: '1',
         year: "Day 1",
         title: "How it Started",
-        desc_content: "That first conversation where we accidentally talked for hours and forgot about the world.",
-        img_left: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=400",
-        img_right: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=400"
+        desc_content: "That first conversation where we accidentally talked for hours....",
+        img_left: "https://i.postimg.cc/500V1zDT/Whats-App-Image-2026-03-09-at-22-13-02.jpg",
+        img_right: "https://i.postimg.cc/wT64yzW8/Whats-App-Image-2026-03-09-at-22-24-07.jpg"
+    },
+    {
+        id: '3',
+        year: "Memories",
+        title: "sweet memories",
+        desc_content: "Every moment with you is a good memory",
+        img_left: "https://i.postimg.cc/9XTzR5DR/Whats-App-Image-2026-03-09-at-22-18-27.jpg",
+        img_right: "https://i.postimg.cc/wMxPpYPc/Whats-App-Image-2026-03-09-at-22-18-29.jpg"
     },
     {
         id: '2',
         year: "Adventures",
         title: "Getting Lost Together",
         desc_content: "Every wrong turn somehow led to the best memories. Here's to all our spontaneous trips.",
-        img_left: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&q=80&w=400",
-        img_right: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=400"
+        img_left: "https://i.postimg.cc/k5Ftt01b/Whats-App-Image-2026-03-09-at-22-20-49-(1).jpg",
+        img_right: "https://i.postimg.cc/GmXWhtr9/Whats-App-Image-2026-03-09-at-22-20-49.jpg"
+    },
+
+    {
+        id: '4',
+        year: "Vibes",
+        title: "Good Vibes",
+        desc_content: "Every wrong turn somehow led to the best memories.",
+        img_left: "https://i.postimg.cc/bv7pprHL/Whats-App-Image-2026-03-09-at-22-18-28.jpg",
+        img_right: "https://i.postimg.cc/nzKbxkL8/Whats-App-Image-2026-03-09-at-22-18-32.jpg"
     },
 ];
 
@@ -86,7 +103,7 @@ function HangingElement({ children, rotate = 0, delay = 0, isNote = false, topOf
         <motion.div
             initial={{ rotate: 0, y: -20, opacity: 0 }}
             animate={{ rotate: rotate, y: 0, opacity: 1 }}
-            transition={{ duration: 1, delay }}
+            transition={{ duration: 0.35, delay }}
             className={`relative flex flex-col items-center justify-start ${isNote ? 'w-full md:w-[35%] z-30' : 'hidden md:flex md:w-[25%] z-20'} ${topOffset}`}
         >
             {/* Hanging String reaching UP to the wave rope */}
@@ -171,7 +188,7 @@ export function Timeline() {
         if (infiniteEvents.length === 0) return;
         const interval = setInterval(() => {
             setActiveIndex((prev) => (prev + 1) % infiniteEvents.length);
-        }, 8500);
+        }, 4000);
         return () => clearInterval(interval);
     }, [infiniteEvents.length]);
 
@@ -205,7 +222,7 @@ export function Timeline() {
             to { stroke-dashoffset: 0; }
           }
           .animate-flow-rope {
-            animation: flowRope 1.5s linear infinite;
+            animation: flowRope 0.6s linear infinite;
           }
         `}
             </style>
@@ -231,7 +248,7 @@ export function Timeline() {
                 <motion.div
                     className="flex items-start w-max h-full relative"
                     animate={{ x: centerOffset }}
-                    transition={{ type: "spring", stiffness: 35, damping: 20 }}
+                    transition={{ type: "spring", stiffness: 120, damping: 14 }}
                 >
 
                     {/* THE SEAMLESS EXPLICIT SINE WAVE ROPE (No Pattern) */}
