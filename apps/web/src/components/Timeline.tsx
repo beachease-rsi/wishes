@@ -127,7 +127,7 @@ function HangingElement({ children, rotate = 0, delay = 0, isNote = false, topOf
 
 export function Timeline() {
     const [events] = useState<TimelineEvent[]>(dummyEvents);
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isMobile, setIsMobile] = useState(false);
     const [vwPixels, setVwPixels] = useState(1000);

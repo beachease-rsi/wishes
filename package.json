@@ -1,6 +1,9 @@
 {
   "name": "wish",
   "version": "1.0.0",
+  "workspaces": [
+    "apps/web"
+  ],
   "main": "index.js",
   "scripts": {
     "build": "npm run build --prefix apps/web",
