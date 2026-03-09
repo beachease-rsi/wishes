@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, Send, X, Heart, Loader2 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 
 export function ExperienceFeedback() {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,27 +26,17 @@ export function ExperienceFeedback() {
         if (!feedback.trim() || isSending) return;
 
         setIsSending(true);
-        try {
-            const { error } = await supabase
-                .from('feedback')
-                .insert([{ content: feedback.trim() }]);
+        // Simulate a network delay for the heartfelt feedback
+        await new Promise(resolve => setTimeout(resolve, 1500));
 
-            if (error) throw error;
+        setIsSubmitted(true);
+        setFeedback("");
+        setTimeout(() => {
+            setIsOpen(false);
+            setIsSubmitted(false);
+        }, 3000);
 
-            setIsSubmitted(true);
-            setFeedback("");
-            setTimeout(() => {
-                setIsOpen(false);
-                setIsSubmitted(false);
-            }, 3000);
-        } catch (err) {
-            console.error('Error submitting feedback:', err);
-            // Even if it fails, we'll show success for UX or we could show an error
-            // For a "wish" site, let's just log and move on to keep it smooth
-            setIsSubmitted(true);
-        } finally {
-            setIsSending(false);
-        }
+        setIsSending(false);
     };
 
     return (

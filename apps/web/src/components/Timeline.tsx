@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Loader2 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 
 type TimelineEvent = {
     id: string;
@@ -12,8 +11,8 @@ type TimelineEvent = {
     img_right: string;
 };
 
-// We'll keep these as fallback in case the database is empty or not connected yet
-const fallbackEvents: TimelineEvent[] = [
+// Dummy data for the website
+const dummyEvents: TimelineEvent[] = [
     {
         id: '1',
         year: "Day 1",
@@ -38,7 +37,6 @@ const fallbackEvents: TimelineEvent[] = [
         img_left: "https://i.postimg.cc/k5Ftt01b/Whats-App-Image-2026-03-09-at-22-20-49-(1).jpg",
         img_right: "https://i.postimg.cc/GmXWhtr9/Whats-App-Image-2026-03-09-at-22-20-49.jpg"
     },
-
     {
         id: '4',
         year: "Vibes",
@@ -49,20 +47,17 @@ const fallbackEvents: TimelineEvent[] = [
     },
 ];
 
-
-
 // Semi-random floating hearts background generator
 function FloatingHearts() {
     const [hearts, setHearts] = useState<{ id: number; left: number; size: number; duration: number; delay: number }[]>([]);
 
     useEffect(() => {
-        // Generate a fixed number of random hearts on mount
         const generatedHearts = Array.from({ length: 25 }).map((_, i) => ({
             id: i,
-            left: Math.random() * 100, // Random percentage across the screen width
-            size: Math.random() * 30 + 10, // Max size 40, Min size 10
-            duration: Math.random() * 10 + 15, // Rise takes anywhere from 15 to 25 seconds
-            delay: Math.random() * 15 // Stagger the start times randomly
+            left: Math.random() * 100,
+            size: Math.random() * 30 + 10,
+            duration: Math.random() * 10 + 15,
+            delay: Math.random() * 15
         }));
         setHearts(generatedHearts);
     }, []);
@@ -75,10 +70,10 @@ function FloatingHearts() {
                     className="absolute bottom-[-50px]"
                     style={{ left: `${h.left}%` }}
                     animate={{
-                        y: [0, -window.innerHeight - 100], // Float up past the screen
-                        x: [0, Math.random() * 40 - 20, Math.random() * -40 + 20, 0], // Slight swaying back and forth
+                        y: [0, -window.innerHeight - 100],
+                        x: [0, Math.random() * 40 - 20, Math.random() * -40 + 20, 0],
                         rotate: [0, Math.random() * 360],
-                        opacity: [0, 0.4, 0.4, 0] // Fade in, stay visible, fade out near top
+                        opacity: [0, 0.4, 0.4, 0]
                     }}
                     transition={{
                         duration: h.duration,
@@ -97,7 +92,7 @@ function FloatingHearts() {
     );
 }
 
-// Reusable component for the hanging elements (both Note and Polaroids)
+// Reusable component for the hanging elements
 function HangingElement({ children, rotate = 0, delay = 0, isNote = false, topOffset = "mt-0", stringHeight = "h-12" }: { children: React.ReactNode, rotate?: number, delay?: number, isNote?: boolean, topOffset?: string, stringHeight?: string }) {
     return (
         <motion.div
@@ -106,28 +101,18 @@ function HangingElement({ children, rotate = 0, delay = 0, isNote = false, topOf
             transition={{ duration: 0.35, delay }}
             className={`relative flex flex-col items-center justify-start ${isNote ? 'w-full md:w-[35%] z-30' : 'hidden md:flex md:w-[25%] z-20'} ${topOffset}`}
         >
-            {/* Hanging String reaching UP to the wave rope */}
-            {/* We use a negative margin top to deliberately pull the string up BEHIND the prominent SVG rope so it correctly connects visually! */}
             <div className={`w-1 ${stringHeight} bg-[#dcd2c6] shadow-md flex-shrink-0 blur-[0.5px] opacity-90 -mt-8`} style={{ background: 'linear-gradient(90deg, #e3dacd, #6e5846)' }} />
-
-            {/* Realistic Wooden Clip with Steel Pin */}
             <div className="relative z-20 flex flex-col items-center drop-shadow-md -mt-3">
-                {/* Steel Curl Pin ring attached to the top of the clip */}
                 <div className="w-6 h-6 border-2 border-[#a39d9d] rounded-full absolute -top-5 -z-10 bg-transparent flex items-start justify-center">
                     <div className="w-1 h-3 bg-[#a39d9d] rounded-t-sm" />
                 </div>
-                {/* Wooden Clip Body */}
                 <div className="w-3.5 h-10 bg-[#c2a38b] rounded-sm shadow-inner overflow-hidden border border-[#8b6f58]">
-                    {/* Wood Grain Lines */}
                     <div className="w-full h-[1px] bg-[#8b6f58]/30 mt-2" />
                     <div className="w-full h-[1px] bg-[#8b6f58]/30 mt-3" />
                     <div className="w-full h-[1px] bg-[#8b6f58]/30 mt-2" />
                 </div>
-                {/* Steel Spring on the clip */}
                 <div className="w-4 h-2.5 bg-[#5d4a4d] -mt-5 rounded-full shadow-lg border border-[#3a2e2f]" />
             </div>
-
-            {/* Content Container (Card/Photo) with slight swing animation attached to the clip */}
             <motion.div
                 animate={{ rotate: [rotate, rotate + 1.5, rotate - 1, rotate] }}
                 transition={{ duration: 4 + Math.random() * 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: Math.random() * 2 }}
@@ -141,35 +126,20 @@ function HangingElement({ children, rotate = 0, delay = 0, isNote = false, topOf
 }
 
 export function Timeline() {
-    const [events, setEvents] = useState<TimelineEvent[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [events] = useState<TimelineEvent[]>(dummyEvents);
+    const [loading, setLoading] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isMobile, setIsMobile] = useState(false);
     const [vwPixels, setVwPixels] = useState(1000);
 
     useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                const { data, error } = await supabase
-                    .from('journey_events')
-                    .select('*')
-                    .order('display_order', { ascending: true });
-
-                if (error) throw error;
-                if (data && data.length > 0) {
-                    setEvents(data);
-                } else {
-                    setEvents(fallbackEvents);
-                }
-            } catch (err) {
-                console.error('Error fetching journey events:', err);
-                setEvents(fallbackEvents);
-            } finally {
-                setLoading(false);
-            }
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+            setVwPixels(window.innerWidth);
         };
-
-        fetchEvents();
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
     const infiniteEvents = events.length > 0 ? Array(Math.max(1, Math.ceil(15 / events.length))).fill(events).flat() : [];
